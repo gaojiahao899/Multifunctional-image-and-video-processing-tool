@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/myImage">
+        <file>image/bg3.jpg</file>
+        <file>image/picture.png</file>
+        <file>image/video.png</file>
+        <file>image/zoom-in.png</file>
+        <file>image/save.png</file>
+        <file>image/gray.png</file>
+        <file>image/junzhi.png</file>
+        <file>image/bianyuan.png</file>
+        <file>image/fuhe.png</file>
+        <file>image/gamma.png</file>
+        <file>image/about.png</file>
+        <file>image/help.png</file>
+        <file>image/zh-en.png</file>
+        <file>image/bg2.jpg</file>
+        <file>image/bg1.jpg</file>
+        <file>image/next.png</file>
+        <file>image/prev.png</file>
+        <file>image/slide.png</file>
+        <file>image/start.png</file>
+        <file>image/handle2.png</file>
+        <file>image/chuizhi.png</file>
+        <file>image/shuiping.png</file>
+        <file>image/turn-left.png</file>
+        <file>image/turn-right.png</file>
+        <file>image/stop.png</file>
+        <file>image/loading.gif</file>
+        <file>image/bg.jpg</file>
+        <file>image/AItubiao.png</file>
+    </qresource>
+    <qresource prefix="/myLanguage">
+        <file>language/en_tr.qm</file>
+        <file>language/zh_tr.qm</file>
+    </qresource>
+</RCC>
