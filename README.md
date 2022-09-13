@@ -14,5 +14,6 @@
 
 2)通过C++语言和OpenCV4.5.1实现了图像处理功能和视频处理功能。
 
-![image](https://user-images.githubusercontent.com/71634771/187429745-6efaf4bf-eca2-4b97-9925-33089613f736.png)
+![界面01](https://user-images.githubusercontent.com/71634771/189834797-9e988c1f-22c4-4426-a4d8-c7b4ce36f43c.jpg)
+
 
