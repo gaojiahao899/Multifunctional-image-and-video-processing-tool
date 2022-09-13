@@ -14,6 +14,8 @@
 
 2)通过C++语言和OpenCV4.5.1实现了图像处理功能和视频处理功能。
 
+3）通过调用百度智能云图像识别API接口，实现图像识别。
+
 ![界面01](https://user-images.githubusercontent.com/71634771/189834797-9e988c1f-22c4-4426-a4d8-c7b4ce36f43c.jpg)
 
 ![image](https://user-images.githubusercontent.com/71634771/189835272-16393491-fb57-43da-bae7-c30d3b741b05.png)
