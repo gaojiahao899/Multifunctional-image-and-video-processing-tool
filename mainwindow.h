@@ -10,7 +10,25 @@
 #include <QTimer>
 #include <QImage>
 #include <QMessageBox>
+
+#include "imageencode.h"
+#include "http.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QJsonArray>
+
 using namespace cv;
+
+//目标识别
+
+//百度智能云应用 1.获取Access Token     2.参数1：API Key      3.参数2：Secret Key
+const QString baidu_tokenUrl = "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=%1&client_secret=%2&";
+const QString client_id = "d1hHnPx0m0UPZss67KohyY3B";
+const QString client_secret= "rgGLCM1f8iifA39FqzURbrgKCVcs8qHn";
+//动物图片识别请求URL
+const QString baidu_imgUrl_animal    = "https://aip.baidubce.com/rest/2.0/image-classify/v1/animal?access_token=%1";
+const QString baidu_imgUrl_landmark  = "https://aip.baidubce.com/rest/2.0/image-classify/v1/landmark?access_token=%1";
 
 
 QT_BEGIN_NAMESPACE
@@ -78,6 +96,7 @@ private slots:
 
     void on_pushButton_3_clicked();//上一张图片按钮
     void on_pushButton_4_clicked();//下一张图片按钮
+    void on_pushButton_recognition_clicked();//目标图片识别
     void on_pushButton_save_clicked();//保存图片按钮
 
     void on_horizontalSlider_valueChanged(int value);//图片亮度调节滑动条

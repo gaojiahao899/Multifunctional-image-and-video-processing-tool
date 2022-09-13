@@ -8,6 +8,7 @@
 #include <QMdiSubWindow>
 #include <QLabel>
 #include <string>
+#include <QMap>
 
 using namespace std;
 #include <iostream>
@@ -31,7 +32,6 @@ using namespace cv;
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/types_c.h>
 #include "opencv2/imgproc/imgproc_c.h"///for cvSmooth
-
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -1289,6 +1289,130 @@ void MainWindow::on_pushButton_4_clicked()
     }
 }
 
+//目标图片识别
+void MainWindow::on_pushButton_recognition_clicked()
+{
+     //清空显示界面
+     ui->textEdit_rec_end->clear();
+
+     //将图片转为base64格式
+     QByteArray img = imageEncode::imageToBase64(this->origin_path);
+
+     //请求数据 body
+     QByteArray requestData = "image=" + img;
+     //答复数据
+     QByteArray replyData;
+
+     //获取令牌access_token
+     QString access_token;
+     //先组合token_url
+     QString url = baidu_tokenUrl.arg(client_id).arg(client_secret);
+     //头部信息
+     QMap<QString,QString> header;
+     header.insert(QString("Content-Type"),QString("application/x-www-form-urlencoded"));
+
+     bool ret = Http::post_sync(url,header,requestData,replyData);
+     if(ret){
+
+         QJsonObject obj = QJsonDocument::fromJson(replyData).object();
+         access_token = obj.value("access_token").toString();
+         //qDebug()<<access_token;
+     }
+     replyData.clear();
+
+     //发送待识别图片
+     QString imgUrl;
+     //识别动物
+     if(ui->checkBox_animal->isChecked())
+     {
+         imgUrl = baidu_imgUrl_animal.arg(access_token);
+         bool ret1 = Http::post_sync(imgUrl,header,requestData,replyData);
+         imgUrl.clear();
+         qDebug()<<replyData;
+
+         //解析结果
+         const QString key1 = "result";
+         const QString key2 = "name";
+
+         if(ret1)
+         {
+             QJsonObject obj1 = QJsonDocument::fromJson(replyData).object();
+
+             if(obj1.contains("result"))
+             {
+                 QJsonValue val = obj1.value(key1);
+                 if(val.isArray())
+                 {
+                     QJsonArray arr = val.toArray();
+                     qDebug()<<arr;
+
+                     QJsonValue firstOne = arr.at(0);
+                     QString name0 = firstOne.toObject().value(key2).toString();
+                     ui->textEdit_rec_end->append("NO.1: "+name0);
+
+
+                     QJsonValue secondOne = arr.at(1);
+                     QString name1 = secondOne.toObject().value(key2).toString();
+                     ui->textEdit_rec_end->append("NO.2: "+name1);
+
+                     QJsonValue thirdOne = arr.at(2);
+                     QString name2 = thirdOne.toObject().value(key2).toString();
+                     ui->textEdit_rec_end->append("NO.3: "+name2);
+
+                     QJsonValue fourthOne = arr.at(3);
+                     QString name3 = fourthOne.toObject().value(key2).toString();
+                     ui->textEdit_rec_end->append("NO.4: "+name3);
+
+                     QJsonValue fifthOne = arr.at(4);
+                     QString name4 = fifthOne.toObject().value(key2).toString();
+                     ui->textEdit_rec_end->append("NO.5: "+name4);
+
+                     return;
+                 }
+
+             }
+         }
+     }
+     //识别地标
+     else if(ui->checkBox_landmark->isChecked())
+     {
+         imgUrl = baidu_imgUrl_landmark.arg(access_token);
+         bool ret2 = Http::post_sync(imgUrl,header,requestData,replyData);
+         imgUrl.clear();
+         qDebug()<<replyData;
+
+         //解析结果
+         const QString key1 = "result";
+         const QString key2 = "landmark";
+         if(ret2)
+         {
+             QJsonObject obj2 = QJsonDocument::fromJson(replyData).object();
+             if(obj2.contains("result"))
+             {
+                 QJsonValue val = obj2.value(key1);
+                 qDebug()<<val;
+                 QString landmark = val.toObject().value(key2).toString();
+                 qDebug()<<landmark;
+//                 QJsonValue firstOne = arr.at(0);
+//                 QString landmark = firstOne.toObject().value(key2).toString();
+                 ui->textEdit_rec_end->append("NO.1: "+landmark);
+                 return;
+
+
+             }
+
+         }
+     }
+     else
+     {
+         ui->textEdit_rec_end->setText("请选取识别目标");
+         return;
+     }
+
+     ui->textEdit_rec_end->setText("对不起，我不认识");
+
+}
+
 //保存
 void MainWindow::on_pushButton_save_clicked()
 {
@@ -1551,6 +1675,8 @@ void MainWindow::on_horizontalSlider_B_valueChanged(int value)
         QMessageBox::warning(nullptr, "提示", "请先打开图片！", QMessageBox::Yes |  QMessageBox::Yes);
     }
 }
+
+
 
 
 //视频
